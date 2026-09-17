@@ -1,0 +1,99 @@
+{
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^wd-(.*)": "wot-design-uni/components/wd-$1/wd-$1.vue",
+      "^empty-tip$": "@/components/empty-tip.vue",
+      "^shop-theme-root$": "@/components/shop-theme-root.vue",
+      "^theme-button$": "@/components/theme-button.vue",
+      "^staff-header$": "@/components/staff/staff-header.vue",
+      "^staff-service-picker$": "@/components/staff/staff-service-picker.vue",
+      "^staff-dock$": "@/components/staff/staff-dock.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "店铺首页",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/booking/list",
+      "style": {
+        "navigationBarTitleText": "我的预约",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/card/list",
+      "style": {
+        "navigationBarTitleText": "我的会员卡",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/mine/index",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "navigationStyle": "custom"
+      }
+    },
+    { "path": "pages/service/detail", "style": { "navigationBarTitleText": "项目详情" } },
+    { "path": "pages/booking/slots", "style": { "navigationBarTitleText": "选择时段" } },
+    { "path": "pages/booking/confirm", "style": { "navigationBarTitleText": "确认预约" } },
+    { "path": "pages/card/buy", "style": { "navigationBarTitleText": "购买会员卡" } },
+    { "path": "pages/verify/code", "style": { "navigationBarTitleText": "核销码" } },
+    { "path": "pages/staff/login", "style": { "navigationBarTitleText": "员工登录" } },
+    { "path": "pages/staff/today", "style": { "navigationBarTitleText": "今日预约", "enablePullDownRefresh": true } },
+    { "path": "pages/staff/scan", "style": { "navigationBarTitleText": "扫码核销" } },
+    { "path": "pages/staff/records", "style": { "navigationBarTitleText": "核销记录" } },
+    { "path": "pages/staff/member", "style": { "navigationBarTitleText": "会员查询" } },
+    { "path": "pages/staff/booking-detail", "style": { "navigationBarTitleText": "预约详情" } },
+    { "path": "pages/staff/mine", "style": { "navigationBarTitleText": "员工中心" } },
+    { "path": "pages/legal/index", "style": { "navigationBarTitleText": "协议与规则" } }
+  ],
+  "tabBar": {
+    "color": "#b5b0a8",
+    "selectedColor": "#a8845a",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/tab/home.png",
+        "selectedIconPath": "static/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/booking/list",
+        "text": "预约",
+        "iconPath": "static/tab/booking.png",
+        "selectedIconPath": "static/tab/booking-active.png"
+      },
+      {
+        "pagePath": "pages/card/list",
+        "text": "会员卡",
+        "iconPath": "static/tab/card.png",
+        "selectedIconPath": "static/tab/card-active.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "static/tab/mine.png",
+        "selectedIconPath": "static/tab/mine-active.png"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "预约会员",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f5f3f0",
+    "enableShareAppMessage": true,
+    "enableShareTimeline": true
+  }
+}

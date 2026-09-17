@@ -1,0 +1,122 @@
+// 筛选区：字段与按钮同一行流式排列
+.biz-filter {
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 8px 12px;
+
+    > .el-form-item {
+      margin-bottom: 0;
+    }
+
+    .el-form-item__label {
+      justify-content: flex-start;
+      padding-right: 8px;
+      font-size: 13px;
+      text-align: left;
+      color: var(--el-text-color-regular);
+    }
+
+    .el-input,
+    .el-select,
+    .el-date-editor.el-input {
+      width: 168px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 8px;
+    align-items: center;
+    height: 32px;
+    margin-bottom: 1px;
+  }
+}
+
+.biz-filter-embedded {
+  padding: 16px 20px 12px;
+  margin-bottom: 16px;
+  background: var(--el-fill-color-lighter);
+  border: 1px solid var(--el-border-color-lighter);
+  border-radius: 10px;
+}
+.biz-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 20px;
+  padding: 16px 0;
+  margin-bottom: 4px;
+  border-bottom: 1px dashed var(--el-border-color-lighter);
+
+  .el-form-item {
+    margin-bottom: 0;
+  }
+
+  .el-form-item__label {
+    font-size: 13px;
+  }
+}
+
+.biz-pagination {
+  display: flex;
+  justify-content: flex-end;
+}
+
+// 表格：覆盖全局 .cell { padding: 0 }
+.biz-table-wrap {
+  margin-top: 4px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.biz-table {
+  width: 100%;
+
+  &.el-table {
+    --el-table-border-color: var(--el-border-color-lighter);
+    --el-table-header-bg-color: var(--el-fill-color-light);
+    --el-table-row-hover-bg-color: var(--el-color-primary-light-9);
+
+    font-size: 13px;
+
+    th.el-table__cell {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .cell {
+      padding: 10px 12px;
+      line-height: 1.5;
+    }
+
+    .el-table__empty-block {
+      min-height: 220px;
+    }
+  }
+
+  .biz-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.biz-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.biz-cover-preview {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-top: 8px;
+  border-radius: 8px;
+}

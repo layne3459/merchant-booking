@@ -1,0 +1,371 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Shop {
+  id             BigInt   @id @default(autoincrement())
+  name           String   @db.VarChar(100)
+  address        String?  @db.VarChar(255)
+  phone          String?  @db.VarChar(20)
+  logo           String?  @db.VarChar(255)
+  businessHours  Json?    @map("business_hours")
+  miniConfig     Json?    @map("mini_config")
+  cardTypes      Json?    @map("card_types")
+  wxConfig       Json?    @map("wx_config")
+  status         Int      @default(1) @db.TinyInt
+  planId         BigInt?  @map("plan_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  plan           Plan?    @relation(fields: [planId], references: [id])
+  subscription   Subscription?
+
+  staff          Staff[]
+  services       Service[]
+  bookings       Booking[]
+  members        Member[]
+  cardTemplates  CardTemplate[]
+  memberCards    MemberCard[]
+  payments       Payment[]
+  adminUsers     AdminUser[]
+
+  @@map("shops")
+}
+
+model Staff {
+  id        BigInt   @id @default(autoincrement())
+  shopId    BigInt   @map("shop_id")
+  name      String   @db.VarChar(50)
+  phone     String?  @db.VarChar(20)
+  role      Int      @db.TinyInt
+  avatar    String?  @db.VarChar(255)
+  status    Int      @default(1) @db.TinyInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  shop      Shop     @relation(fields: [shopId], references: [id])
+  schedules StaffSchedule[]
+  bookings  Booking[]
+
+  @@index([shopId])
+  @@map("staff")
+}
+
+model StaffSchedule {
+  id            BigInt    @id @default(autoincrement())
+  shopId        BigInt    @map("shop_id")
+  staffId       BigInt    @map("staff_id")
+  dayOfWeek     Int       @map("day_of_week") @db.TinyInt
+  startTime     String    @map("start_time") @db.VarChar(5)
+  endTime       String    @map("end_time") @db.VarChar(5)
+  isRest        Int       @default(0) @map("is_rest") @db.TinyInt
+  exceptionDate DateTime? @map("exception_date") @db.Date
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  staff Staff @relation(fields: [staffId], references: [id])
+
+  @@index([shopId, staffId, dayOfWeek])
+  @@map("staff_schedules")
+}
+
+model Service {
+  id        BigInt   @id @default(autoincrement())
+  shopId    BigInt   @map("shop_id")
+  name      String   @db.VarChar(100)
+  price     Int
+  duration  Int
+  cover        String?  @db.VarChar(255)
+  description  String?  @db.Text
+  tags         Json?
+  highlights   Json?
+  staffIds     Json?    @map("staff_ids")
+  depositRatio Int      @default(20) @map("deposit_ratio") @db.TinyInt
+  depositType  Int      @default(1) @map("deposit_type") @db.TinyInt
+  depositFixed Int      @default(0) @map("deposit_fixed")
+  status    Int      @default(1) @db.TinyInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  shop     Shop      @relation(fields: [shopId], references: [id])
+  bookings Booking[]
+
+  @@index([shopId])
+  @@map("services")
+}
+
+model Member {
+  id        BigInt   @id @default(autoincrement())
+  shopId    BigInt   @map("shop_id")
+  openid    String   @db.VarChar(64)
+  unionid   String?  @db.VarChar(64)
+  phone     String?  @db.VarChar(20)
+  nickname  String?  @db.VarChar(50)
+  avatar    String?  @db.VarChar(255)
+  status    Int      @default(1) @db.TinyInt
+  createdAt DateTime @default(now()) @map("created_at")
+
+  shop        Shop          @relation(fields: [shopId], references: [id])
+  bookings    Booking[]
+  memberCards MemberCard[]
+  payments    Payment[]
+
+  @@unique([shopId, openid])
+  @@index([shopId, phone])
+  @@map("members")
+}
+
+model Booking {
+  id            BigInt    @id @default(autoincrement())
+  shopId        BigInt    @map("shop_id")
+  memberId      BigInt    @map("member_id")
+  serviceId     BigInt    @map("service_id")
+  staffId       BigInt    @map("staff_id")
+  bookDate      DateTime  @map("book_date") @db.Date
+  timeSlot      String    @map("time_slot") @db.VarChar(10)
+  status        Int       @default(0) @db.TinyInt
+  depositAmount Int       @default(0) @map("deposit_amount")
+  paymentId     BigInt?   @map("payment_id")
+  remark        String?   @db.VarChar(255)
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  shop    Shop    @relation(fields: [shopId], references: [id])
+  member  Member  @relation(fields: [memberId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id])
+  staff   Staff   @relation(fields: [staffId], references: [id])
+  logs    BookingLog[]
+
+  @@index([shopId, staffId, bookDate, timeSlot, status], map: "idx_bookings_slot")
+  @@map("bookings")
+}
+
+model BookingLog {
+  id         BigInt   @id @default(autoincrement())
+  shopId     BigInt   @map("shop_id")
+  bookingId  BigInt   @map("booking_id")
+  fromStatus Int      @map("from_status") @db.TinyInt
+  toStatus   Int      @map("to_status") @db.TinyInt
+  operatorId BigInt   @default(0) @map("operator_id")
+  remark     String?  @db.VarChar(255)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+
+  @@map("booking_logs")
+}
+
+model CardTemplate {
+  id         BigInt   @id @default(autoincrement())
+  shopId     BigInt   @map("shop_id")
+  name       String   @db.VarChar(100)
+  type       Int      @db.TinyInt
+  price      Int
+  value      Int
+  validDays   Int      @default(0) @map("valid_days")
+  description String?  @db.VarChar(255)
+  serviceIds  Json?    @map("service_ids")
+  status     Int      @default(1) @db.TinyInt
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  shop        Shop         @relation(fields: [shopId], references: [id])
+  memberCards MemberCard[]
+
+  @@index([shopId])
+  @@map("card_templates")
+}
+
+model MemberCard {
+  id          BigInt    @id @default(autoincrement())
+  shopId      BigInt    @map("shop_id")
+  memberId    BigInt    @map("member_id")
+  templateId  BigInt    @map("template_id")
+  type        Int       @db.TinyInt
+  balance     Int       @default(0)
+  remainTimes Int       @default(0) @map("remain_times")
+  expireAt    DateTime? @map("expire_at")
+  status      Int       @default(1) @db.TinyInt
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  shop         Shop              @relation(fields: [shopId], references: [id])
+  member       Member            @relation(fields: [memberId], references: [id])
+  template     CardTemplate      @relation(fields: [templateId], references: [id])
+  transactions CardTransaction[]
+
+  @@index([shopId, memberId])
+  @@map("member_cards")
+}
+
+model CardTransaction {
+  id          BigInt   @id @default(autoincrement())
+  shopId      BigInt   @map("shop_id")
+  cardId      BigInt   @map("card_id")
+  memberId    BigInt   @map("member_id")
+  type        Int      @db.TinyInt
+  amount      Int
+  beforeValue Int      @map("before_value")
+  afterValue  Int      @map("after_value")
+  refType     String?  @map("ref_type") @db.VarChar(20)
+  refId       BigInt?  @map("ref_id")
+  operatorId  BigInt?  @map("operator_id")
+  remark      String?  @db.VarChar(255)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  card MemberCard @relation(fields: [cardId], references: [id])
+
+  @@index([cardId, createdAt], map: "idx_card_tx")
+  @@index([memberId, createdAt], map: "idx_card_tx_member")
+  @@map("card_transactions")
+}
+
+model Payment {
+  id            BigInt    @id @default(autoincrement())
+  shopId        BigInt    @map("shop_id")
+  outTradeNo    String    @unique @map("out_trade_no") @db.VarChar(64)
+  transactionId String?   @map("transaction_id") @db.VarChar(64)
+  memberId      BigInt    @map("member_id")
+  amount        Int
+  type          Int       @db.TinyInt
+  refType       String?   @map("ref_type") @db.VarChar(20)
+  refId         BigInt?   @map("ref_id")
+  status        Int       @default(0) @db.TinyInt
+  paidAt        DateTime? @map("paid_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  shop    Shop     @relation(fields: [shopId], references: [id])
+  member  Member   @relation(fields: [memberId], references: [id])
+  refunds Refund[]
+
+  @@index([shopId])
+  @@map("payments")
+}
+
+model Refund {
+  id           BigInt   @id @default(autoincrement())
+  shopId       BigInt   @map("shop_id")
+  paymentId    BigInt   @map("payment_id")
+  outRefundNo  String   @unique @map("out_refund_no") @db.VarChar(64)
+  refundId     String?  @map("refund_id") @db.VarChar(64)
+  amount       Int
+  status       Int      @default(0) @db.TinyInt
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  payment Payment @relation(fields: [paymentId], references: [id])
+
+  @@map("refunds")
+}
+
+model VerifyRecord {
+  id         BigInt   @id @default(autoincrement())
+  shopId     BigInt   @map("shop_id")
+  code       String   @unique @db.VarChar(64)
+  memberId   BigInt   @map("member_id")
+  cardId     BigInt   @map("card_id")
+  serviceId  BigInt?  @map("service_id")
+  bookingId  BigInt?  @map("booking_id")
+  operatorId BigInt   @map("operator_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([shopId])
+  @@map("verify_records")
+}
+
+model SubscribeLog {
+  id         BigInt   @id @default(autoincrement())
+  shopId     BigInt   @map("shop_id")
+  memberId   BigInt   @map("member_id")
+  templateId String   @map("template_id") @db.VarChar(64)
+  payload    Json?
+  status     Int      @default(0) @db.TinyInt
+  errMsg     String?  @map("err_msg") @db.VarChar(255)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("subscribe_logs")
+}
+
+model AdminUser {
+  id           BigInt   @id @default(autoincrement())
+  shopId       BigInt   @map("shop_id")
+  username     String   @db.VarChar(50)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  role         Int      @db.TinyInt
+  status       Int      @default(1) @db.TinyInt
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  shop Shop @relation(fields: [shopId], references: [id])
+
+  @@unique([shopId, username])
+  @@map("admin_users")
+}
+
+model OperationLog {
+  id          BigInt   @id @default(autoincrement())
+  shopId      BigInt   @map("shop_id")
+  adminUserId BigInt   @map("admin_user_id")
+  action      String   @db.VarChar(50)
+  targetType  String?  @map("target_type") @db.VarChar(20)
+  targetId    BigInt?  @map("target_id")
+  ip          String?  @db.VarChar(45)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([shopId, createdAt])
+  @@map("operation_logs")
+}
+
+model TimeSlotLock {
+  id        BigInt   @id @default(autoincrement())
+  shopId    BigInt   @map("shop_id")
+  staffId   BigInt   @map("staff_id")
+  lockDate  DateTime @map("lock_date") @db.Date
+  timeSlot  String   @map("time_slot") @db.VarChar(10)
+  bookingId BigInt   @map("booking_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([shopId, staffId, lockDate, timeSlot])
+  @@map("time_slot_locks")
+}
+
+model Plan {
+  id         BigInt   @id @default(autoincrement())
+  code       String   @unique @db.VarChar(32)
+  name       String   @db.VarChar(50)
+  priceMonth Int      @map("price_month")
+  trialDays  Int      @default(14) @map("trial_days")
+  maxStaff   Int      @default(5) @map("max_staff")
+  allowPay   Int      @default(1) @map("allow_pay") @db.TinyInt
+  allowCards Int      @default(1) @map("allow_cards") @db.TinyInt
+  status     Int      @default(1) @db.TinyInt
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  shops         Shop[]
+  subscriptions Subscription[]
+
+  @@map("plans")
+}
+
+model Subscription {
+  id        BigInt   @id @default(autoincrement())
+  shopId    BigInt   @unique @map("shop_id")
+  planId    BigInt   @map("plan_id")
+  status    Int      @db.TinyInt
+  startAt   DateTime @map("start_at")
+  expireAt  DateTime @map("expire_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  shop Shop @relation(fields: [shopId], references: [id])
+  plan Plan @relation(fields: [planId], references: [id])
+
+  @@index([expireAt, status])
+  @@map("subscriptions")
+}
+
+model PlatformUser {
+  id           BigInt   @id @default(autoincrement())
+  username     String   @unique @db.VarChar(50)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  status       Int      @default(1) @db.TinyInt
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("platform_users")
+}

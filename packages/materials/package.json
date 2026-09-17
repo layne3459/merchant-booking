@@ -1,0 +1,21 @@
+{
+  "name": "@sa/materials",
+  "version": "1.4.0",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["./src/*"]
+    }
+  },
+  "dependencies": {
+    "@sa/color": "workspace:*",
+    "@sa/utils": "workspace:*",
+    "simplebar-vue": "2.4.2",
+    "vue": "3.5.31"
+  },
+  "devDependencies": {
+    "typed-css-modules": "0.9.1"
+  }
+}

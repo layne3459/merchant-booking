@@ -1,0 +1,272 @@
+/* 商家预约小程序 — 全局主题 */
+
+page {
+  --mb-primary: #a8845a;
+  --mb-primary-light: #c9a87c;
+  --mb-primary-dark: #96744d;
+  --mb-page-bg: #f5f3f0;
+  --mb-btn-bg: #a8845a;
+  --mb-btn-text: #ffffff;
+  --mb-btn-border: #a8845a;
+  --mb-btn-outline-text: #a8845a;
+  --mb-title: #2c2a26;
+  --mb-content: #4a4640;
+  --mb-secondary: #9a958c;
+  --mb-hero-mid: #6b5d52;
+  --mb-hero-dark: #3d3530;
+  background-color: var(--mb-page-bg);
+  color: var(--mb-title);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+/* 页面容器 */
+.mb-page {
+  min-height: 100vh;
+  padding: 24rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: var(--mb-page-bg);
+}
+
+.page {
+  min-height: 100vh;
+  background: var(--mb-page-bg);
+}
+
+.mb-page--flush {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* 卡片 */
+.mb-card {
+  background: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 8rpx 32rpx rgba(44, 42, 38, 0.06);
+  overflow: hidden;
+}
+
+.mb-card--pad {
+  padding: 28rpx 32rpx;
+}
+
+/* 区块标题 */
+.mb-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+  padding: 0 4rpx;
+}
+
+.mb-section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--mb-title);
+  letter-spacing: 0.5rpx;
+}
+
+.mb-section-sub {
+  font-size: 24rpx;
+  color: var(--mb-secondary);
+}
+
+/* 主色按钮 */
+.mb-btn-primary {
+  color: var(--mb-btn-text) !important;
+  border: none !important;
+}
+
+.mb-btn-primary[disabled] {
+  opacity: 0.45;
+}
+
+.mb-btn-outline {
+  background: transparent !important;
+  color: var(--mb-btn-outline-text) !important;
+  border: 2rpx solid var(--mb-btn-border) !important;
+  border-radius: 48rpx !important;
+}
+
+/* 原生 button / 自定义 view 按钮 */
+.mb-theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: var(--mb-btn-bg);
+  color: var(--mb-btn-text);
+  border: none;
+  border-radius: 16rpx;
+  font-weight: 600;
+  font-size: 28rpx;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.mb-theme-btn--block {
+  display: flex;
+  width: 100%;
+  height: 88rpx;
+  font-size: 30rpx;
+  box-shadow: 0 12rpx 28rpx rgba(44, 42, 38, 0.14);
+}
+
+.mb-theme-btn--round {
+  border-radius: 999rpx;
+}
+
+.mb-theme-btn--plain {
+  background: transparent;
+  color: var(--mb-btn-outline-text);
+  border: 2rpx solid var(--mb-btn-border);
+  box-shadow: none;
+}
+
+.mb-theme-btn--small {
+  height: 64rpx;
+  padding: 0 24rpx;
+  font-size: 24rpx;
+}
+
+.mb-theme-btn--large {
+  height: 96rpx;
+  font-size: 32rpx;
+}
+
+.mb-theme-btn--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.mb-native-btn-primary {
+  background-color: var(--mb-btn-bg) !important;
+  color: var(--mb-btn-text) !important;
+  border: none !important;
+}
+
+.mb-native-btn-outline {
+  background-color: transparent !important;
+  color: var(--mb-btn-outline-text) !important;
+  border: 2rpx solid var(--mb-btn-border) !important;
+}
+
+.mb-btn-ghost {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+  border: 2rpx solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 48rpx !important;
+  font-size: 26rpx !important;
+}
+
+/* 空状态 */
+.mb-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 48rpx;
+  color: #b5b0a8;
+}
+
+.mb-empty__icon {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f0ebe3, #e8e2d8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72rpx;
+  margin-bottom: 28rpx;
+}
+
+.mb-empty__title {
+  font-size: 30rpx;
+  color: #6b665e;
+  font-weight: 500;
+}
+
+.mb-empty__hint {
+  font-size: 24rpx;
+  margin-top: 12rpx;
+  color: #b5b0a8;
+}
+
+/* 状态标签 */
+.mb-tag {
+  display: inline-block;
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-weight: 500;
+}
+
+.mb-tag--pending { background: #fef3e2; color: #b45309; }
+.mb-tag--confirmed { background: #e8f5e9; color: #2e7d32; }
+.mb-tag--arrived { background: #e3f2fd; color: #1565c0; }
+.mb-tag--done { background: #f3f4f6; color: #6b7280; }
+.mb-tag--cancel { background: #fce4ec; color: #c62828; }
+
+/* 价格 */
+.mb-price {
+  color: #c45c4a;
+  font-weight: 700;
+}
+
+.mb-price--lg {
+  font-size: 40rpx;
+}
+
+/* 底部固定栏 */
+.mb-footer-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20rpx 32rpx calc(20rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 -4rpx 24rpx rgba(0, 0, 0, 0.06);
+  z-index: 100;
+}
+
+.mb-footer-spacer {
+  height: 140rpx;
+}
+
+/* 信息行 */
+.mb-info-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0ebe3;
+}
+
+.mb-info-row:last-child {
+  border-bottom: none;
+}
+
+.mb-info-row__label {
+  width: 140rpx;
+  flex-shrink: 0;
+  color: var(--mb-secondary);
+  font-size: 26rpx;
+}
+
+.mb-info-row__value {
+  flex: 1;
+  color: var(--mb-content);
+  font-size: 28rpx;
+}
+
+/* 加载 */
+.mb-loading {
+  text-align: center;
+  padding: 80rpx 0;
+  color: #b5b0a8;
+  font-size: 26rpx;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "merchant-booking",
+  "private": true,
+  "scripts": {
+    "kill:dev": "node scripts/kill-dev.mjs all",
+    "kill:api": "node scripts/kill-dev.mjs api",
+    "kill:mini": "node scripts/kill-dev.mjs mini",
+    "predev:api": "node scripts/kill-dev.mjs api",
+    "dev:api": "pnpm --filter @merchant-booking/api dev",
+    "dev:worker": "pnpm --filter @merchant-booking/api dev:worker",
+    "dev:admin": "pnpm --filter @merchant-booking/admin dev",
+    "predev:mini": "node scripts/kill-dev.mjs mini",
+    "dev:mini": "pnpm --filter @merchant-booking/mini dev:mp-weixin",
+    "db:migrate": "pnpm --filter @merchant-booking/api prisma migrate dev",
+    "db:seed": "pnpm --filter @merchant-booking/api prisma db seed",
+    "db:generate": "pnpm --filter @merchant-booking/api prisma generate",
+    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker/docker-compose.yml down"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
